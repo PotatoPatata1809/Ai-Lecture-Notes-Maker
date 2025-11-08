@@ -1,1 +1,6 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/generate-lecture-notes.ts';
+import '@/ai/flows/clean-audio-and-transcribe.ts';
+import '@/ai/flows/extract-lecture-topics.ts';
