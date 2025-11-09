@@ -53,31 +53,35 @@ const generateLectureNotesPrompt = ai.definePrompt({
   name: 'generateLectureNotesPrompt',
   input: {schema: GenerateLectureNotesInputSchema},
   output: {schema: GenerateLectureNotesOutputSchema},
-  prompt: `You are an expert note-taker, skilled at summarizing and explaining complex topics in a clear and structured way.
+  prompt: `You are a world-class AI note-taker, renowned for creating structured, detailed, and easy-to-understand study materials.
 
-  A student has provided a lecture transcription (potentially in a different language) and a list of key topics with timestamps. Your task is to generate comprehensive notes **in English** about these topics using rich markdown formatting.
+A student has provided a lecture transcription and a list of key topics with timestamps. Your task is to generate comprehensive notes **in English**.
 
-  **Formatting Guidelines:**
-  - Use bold headings ('#', '##', '###') for main topics and sub-topics. Include the timestamp next to the main topic heading.
-  - Use **bold text** for key terms and important concepts that are not headings.
-  - Use bullet points ('-' or '*') for lists of information, examples, or steps.
-  - Include examples to illustrate complex concepts.
-  - Write in a clear, explanatory style.
-  - Ensure the notes are well-organized and easy to read.
+**Formatting and Quality Guidelines (Follow Strictly):**
+- **Structure:** The notes must be well-organized and easy to read.
+- **Headings:**
+    - Use a main heading for each topic (e.g., '# Topic Name (MM:SS)'). The heading must be **bold**.
+    - Use sub-headings (e.g., '## Key Concepts', '### Sub-Concept') for structure within a topic. These should also be **bold**.
+- **Key Terms:** For important terms and concepts that are not headings, make them **bold** (e.g., "**Artificial Intelligence** is a broad field...").
+- **Lists:** Use bullet points ('-') for lists of information, steps, or examples.
+- **Examples:** You **must** include clear and relevant examples to illustrate complex concepts, especially for 'medium' and 'detailed' levels.
+- **Clarity:** Write in a clear, explanatory style suitable for a university student.
 
-  The user has requested a '{{{detailLevel}}}' level of detail. Please adjust the length and depth of the summary accordingly:
-  - 'basic': A brief overview of the main topics. Use headings and a few bullet points.
-  - 'medium': A standard summary with key points for each topic. Explain the concepts and use bold text for important terms. Include simple examples.
-  - 'detailed': A comprehensive summary including in-depth explanations, examples, and any relevant formulas for each topic. Use a clear structure with headings, sub-headings, bold text, and nested bullet points.
+**Detail Level Instructions:**
+- **'basic'**: Provide a concise overview. Use one main heading per topic and a few key bullet points.
+- **'medium'**: A standard summary. For each topic, explain the main concepts, use bold text for key terms, and provide at least one simple example.
+- **'detailed'**: A comprehensive, in-depth guide. For each topic, provide deep explanations, multiple examples, relevant formulas (if applicable), and use a clear structure with sub-headings and nested bullet points. This should be a thorough study guide.
 
-  Use the provided transcription to understand the context of the lecture, but generate the notes based on your knowledge of the topics provided. If the topics are not in English, translate them to English first.
+**Task:**
+Generate notes based on the topics provided. Use the transcription for context, but expand on the topics with your own knowledge. If a topic is not in English, translate it first.
 
-  Topics:
-  {{#each topics}}
-  - {{{this.topic}}} ({{this.timestamp}})
-  {{/each}}
+**Topics and Timestamps:**
+{{#each topics}}
+- Topic: {{{this.topic}}}, Timestamp: ({{{this.timestamp}}})
+{{/each}}
 
-  Lecture Transcription: {{{transcription}}}
+**Lecture Transcription for Context:**
+{{{transcription}}}
   `,
 });
 
