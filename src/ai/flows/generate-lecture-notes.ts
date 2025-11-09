@@ -4,8 +4,7 @@
  * @fileOverview A lecture notes generation AI agent.
  *
  * - generateLectureNotes - A function that handles the lecture notes generation process.
- * - GenerateLectureNotesInput - The input type for the generateLectureNotes function.
- * - GenerateLectureNotesOutput - The return type for the generateLectureNotes function.
+ * - orchestrateLectureNotesGeneration - A function that orchestrates the entire notes generation process from an audio file.
  */
 
 import {ai} from '@/ai/genkit';
@@ -13,7 +12,6 @@ import {z} from 'genkit';
 import {cleanAudioAndTranscribe} from './clean-audio-and-transcribe';
 import {
   extractLectureTopics,
-  type ExtractLectureTopicsOutput,
 } from './extract-lecture-topics';
 
 const TopicSchema = z.object({
@@ -66,11 +64,6 @@ A student has provided a lecture transcription and a list of key topics with tim
 - **Lists:** Use standard bullet points ('-') for lists of information, steps, or examples. Ensure there is a newline before and after the list.
 - **Examples:** You **must** include clear and relevant examples to illustrate complex concepts, especially for 'medium' and 'detailed' levels. This is a critical requirement.
 - **Clarity and Length:** Write in a clear, explanatory style suitable for a university student. The notes should be thorough and expand significantly on the provided topics.
-
-**Detail Level Instructions:**
-- **'basic'**: A concise overview. Use one main heading per topic and a few key bullet points.
-- **'medium'**: A standard summary. For each topic, explain the main concepts, use bold text for key terms, provide at least one clear example, and use sub-headings for organization.
-- **'detailed'**: A comprehensive, in-depth guide. For each topic, provide deep explanations, multiple examples, relevant formulas (if applicable), and use a clear structure with nested sub-headings and bullet points. This should be a lengthy and thorough study guide.
 
 **Task:**
 Generate the notes based on the topics provided. Use the transcription for context, but expand on the topics with your own knowledge to create a complete and refined set of study notes. If a topic is not in English, translate its title first.
