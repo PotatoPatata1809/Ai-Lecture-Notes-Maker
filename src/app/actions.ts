@@ -5,23 +5,26 @@ import { z } from 'zod';
 
 const actionInputSchema = z.object({
   audioDataUri: z.string().startsWith('data:audio/', { message: "Invalid audio file format." }),
+  detailLevel: z.enum(['basic', 'medium', 'detailed']),
 });
 
 export async function processAudio(formData: FormData) {
   try {
     const inputData = {
       audioDataUri: formData.get('audioDataUri') as string,
+      detailLevel: formData.get('detailLevel') as 'basic' | 'medium' | 'detailed',
     };
     
     const validatedInput = actionInputSchema.safeParse(inputData);
 
     if (!validatedInput.success) {
       console.error('Invalid input:', validatedInput.error.format());
-      return { error: validatedInput.error.flatten().fieldErrors.audioDataUri?.[0] || 'Invalid audio data URI format.' };
+      return { error: validatedInput.error.flatten().fieldErrors.audioDataUri?.[0] || 'Invalid input.' };
     }
 
     const lectureNotesInput: GenerateLectureNotesInput = {
         audioDataUri: validatedInput.data.audioDataUri,
+        detailLevel: validatedInput.data.detailLevel,
     };
 
     const result = await generateLectureNotes(lectureNotesInput);
