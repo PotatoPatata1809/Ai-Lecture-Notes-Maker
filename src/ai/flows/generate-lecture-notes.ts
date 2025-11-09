@@ -41,7 +41,7 @@ const generateLectureNotesPrompt = ai.definePrompt({
   output: {schema: GenerateLectureNotesOutputSchema},
   prompt: `You are an expert note-taker, skilled at summarizing and explaining complex topics in a clear and structured way.
 
-  A student has provided a lecture transcription and a list of key topics from that lecture. Your task is to generate comprehensive notes about these topics using rich markdown formatting.
+  A student has provided a lecture transcription (potentially in a different language) and a list of key topics from that lecture. Your task is to generate comprehensive notes **in English** about these topics using rich markdown formatting.
 
   **Formatting Guidelines:**
   - Use bold headings ('#', '##', '###') for main topics and sub-topics.
@@ -56,7 +56,7 @@ const generateLectureNotesPrompt = ai.definePrompt({
   - 'medium': A standard summary with key points for each topic. Explain the concepts and use bold text for important terms. Include simple examples.
   - 'detailed': A comprehensive summary including in-depth explanations, examples, and any relevant formulas for each topic. Use a clear structure with headings, sub-headings, bold text, and nested bullet points.
 
-  Use the provided transcription to understand the context of the lecture, but generate the notes based on your knowledge of the topics provided.
+  Use the provided transcription to understand the context of the lecture, but generate the notes based on your knowledge of the topics provided. If the topics are not in English, translate them to English first.
 
   Topics:
   {{#each topics}}

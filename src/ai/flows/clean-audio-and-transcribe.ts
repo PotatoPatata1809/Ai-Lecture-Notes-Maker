@@ -35,8 +35,15 @@ const cleanAudioAndTranscribePrompt = ai.definePrompt({
   name: 'cleanAudioAndTranscribePrompt',
   input: {schema: CleanAudioAndTranscribeInputSchema},
   output: {schema: CleanAudioAndTranscribeOutputSchema},
-  prompt: `You are an AI assistant that cleans and transcribes audio. The user will provide an audio file and you must return the transcription.
-Audio: {{media url=audioDataUri}}`,
+  prompt: `You are an AI assistant that transcribes audio. The user will provide an audio file.
+  
+  Your task is to:
+  1. Detect the language being spoken in the audio.
+  2. Transcribe the audio into text in its original language.
+  
+  Return only the transcription.
+
+  Audio: {{media url=audioDataUri}}`,
 });
 
 const cleanAudioAndTranscribeFlow = ai.defineFlow(

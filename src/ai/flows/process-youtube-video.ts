@@ -58,7 +58,7 @@ const transcribeAudioPrompt = ai.definePrompt({
     name: 'transcribeAudioPrompt',
     input: { schema: TranscribeAudioInputSchema },
     output: { schema: TranscribeAudioOutputSchema },
-    prompt: `Transcribe the following audio.
+    prompt: `Transcribe the following audio. Detect the language and transcribe in that language.
   
     Audio: {{media url=audioDataUri}}`,
 });
@@ -94,8 +94,10 @@ const youtubeVideoFlow = ai.defineFlow(
   },
   async input => {
     // This is a mock implementation because there is no tool to get audio from youtube.
-    const transcription = `Heuristic search is a search technique that seeks to improve the efficiency of a search process by sacrificing completeness or optimality. In other words, it aims to find a good solution, but not necessarily the best one. This is in contrast to exact algorithms, which are guaranteed to find the optimal solution but can be very slow.
-Genetic algorithms are a type of heuristic search that is inspired by the process of natural selection. They are used to find solutions to optimization and search problems. Genetic algorithms work by creating a population of candidate solutions and then repeatedly applying a set of genetic operators to the population to evolve new and better solutions.`;
+    // In a real scenario, we would extract audio, then transcribe.
+    // For this demo, we will simulate a french transcription.
+    const transcription = `La recherche heuristique est une technique de recherche qui vise à améliorer l'efficacité d'un processus de recherche en sacrifiant l'exhaustivité ou l'optimalité. En d'autres termes, elle vise à trouver une bonne solution, mais pas nécessairement la meilleure. Ceci est en contraste avec les algorithmes exacts, qui sont garantis de trouver la solution optimale mais peuvent être très lents.
+Les algorithmes génétiques sont un type de recherche heuristique qui s'inspire du processus de sélection naturelle. Ils sont utilisés pour trouver des solutions à des problèmes d'optimisation et de recherche. Les algorithmes génétiques fonctionnent en créant une population de solutions candidates, puis en appliquant de manière répétée un ensemble d'opérateurs génétiques à la population pour faire évoluer des solutions nouvelles et meilleures.`;
     
     // Step 2: Extract Topics from Transcription
     const {topics} = await extractLectureTopics({transcription});
