@@ -1,6 +1,6 @@
 'use server';
 
-import { generateLectureNotes, type GenerateLectureNotesInput } from '@/ai/flows/generate-lecture-notes';
+import { orchestrateLectureNotesGeneration, type OrchestratorInput } from '@/ai/flows/generate-lecture-notes';
 import { z } from 'zod';
 
 const actionInputSchema = z.object({
@@ -22,12 +22,12 @@ export async function processAudio(formData: FormData) {
       return { error: validatedInput.error.flatten().fieldErrors.audioDataUri?.[0] || 'Invalid input.' };
     }
 
-    const lectureNotesInput: GenerateLectureNotesInput = {
+    const lectureNotesInput: OrchestratorInput = {
         audioDataUri: validatedInput.data.audioDataUri,
         detailLevel: validatedInput.data.detailLevel,
     };
 
-    const result = await generateLectureNotes(lectureNotesInput);
+    const result = await orchestrateLectureNotesGeneration(lectureNotesInput);
 
     if (!result || !result.notes) {
       return { error: 'Failed to generate notes. The AI returned an empty result.' };
