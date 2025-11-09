@@ -11,23 +11,37 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import {cleanAudioAndTranscribe} from './clean-audio-and-transcribe';
-import {extractLectureTopics} from './extract-lecture-topics';
+import {
+  extractLectureTopics,
+  type ExtractLectureTopicsOutput,
+} from './extract-lecture-topics';
+
+const TopicSchema = z.object({
+  topic: z.string(),
+  timestamp: z.string(),
+});
 
 const GenerateLectureNotesInputSchema = z.object({
   transcription: z.string().describe('The transcription of the lecture.'),
-  topics: z.array(z.string()).describe('The main topics of the lecture.'),
+  topics: z
+    .array(TopicSchema)
+    .describe('The main topics of the lecture with timestamps.'),
   detailLevel: z
     .enum(['basic', 'medium', 'detailed'])
     .describe(
       'The desired level of detail for the notes. Can be "basic", "medium", or "detailed".'
     ),
 });
-export type GenerateLectureNotesInput = z.infer<typeof GenerateLectureNotesInputSchema>;
+export type GenerateLectureNotesInput = z.infer<
+  typeof GenerateLectureNotesInputSchema
+>;
 
 const GenerateLectureNotesOutputSchema = z.object({
   notes: z.string().describe('The summarized lecture notes in markdown format.'),
 });
-export type GenerateLectureNotesOutput = z.infer<typeof GenerateLectureNotesOutputSchema>;
+export type GenerateLectureNotesOutput = z.infer<
+  typeof GenerateLectureNotesOutputSchema
+>;
 
 export async function generateLectureNotes(
   input: GenerateLectureNotesInput
@@ -41,10 +55,10 @@ const generateLectureNotesPrompt = ai.definePrompt({
   output: {schema: GenerateLectureNotesOutputSchema},
   prompt: `You are an expert note-taker, skilled at summarizing and explaining complex topics in a clear and structured way.
 
-  A student has provided a lecture transcription (potentially in a different language) and a list of key topics from that lecture. Your task is to generate comprehensive notes **in English** about these topics using rich markdown formatting.
+  A student has provided a lecture transcription (potentially in a different language) and a list of key topics with timestamps. Your task is to generate comprehensive notes **in English** about these topics using rich markdown formatting.
 
   **Formatting Guidelines:**
-  - Use bold headings ('#', '##', '###') for main topics and sub-topics.
+  - Use bold headings ('#', '##', '###') for main topics and sub-topics. Include the timestamp next to the main topic heading.
   - Use **bold text** for key terms and important concepts that are not headings.
   - Use bullet points ('-' or '*') for lists of information, examples, or steps.
   - Include examples to illustrate complex concepts.
@@ -60,7 +74,7 @@ const generateLectureNotesPrompt = ai.definePrompt({
 
   Topics:
   {{#each topics}}
-  - {{{this}}}
+  - {{{this.topic}}} ({{this.timestamp}})
   {{/each}}
 
   Lecture Transcription: {{{transcription}}}
@@ -94,8 +108,10 @@ const OrchestratorInputSchema = z.object({
 
 export type OrchestratorInput = z.infer<typeof OrchestratorInputSchema>;
 
-export async function orchestrateLectureNotesGeneration(input: OrchestratorInput) {
-    return orchestratorFlow(input);
+export async function orchestrateLectureNotesGeneration(
+  input: OrchestratorInput
+) {
+  return orchestratorFlow(input);
 }
 
 const orchestratorFlow = ai.defineFlow(
@@ -104,28 +120,30 @@ const orchestratorFlow = ai.defineFlow(
     inputSchema: OrchestratorInputSchema,
     outputSchema: GenerateLectureNotesOutputSchema,
   },
-  async (input) => {
+  async input => {
     // Step 1: Clean and Transcribe Audio
-    const transcriptionResult = await cleanAudioAndTranscribe({ audioDataUri: input.audioDataUri });
+    const transcriptionResult = await cleanAudioAndTranscribe({
+      audioDataUri: input.audioDataUri,
+    });
     if (!transcriptionResult.transcription) {
-        throw new Error("Failed to transcribe audio.");
+      throw new Error('Failed to transcribe audio.');
     }
-    const { transcription } = transcriptionResult;
+    const {transcription} = transcriptionResult;
 
     // Step 2: Extract Topics from Transcription
-    const topicsResult = await extractLectureTopics({ transcription });
-     if (!topicsResult.topics || topicsResult.topics.length === 0) {
-        throw new Error("Failed to extract topics from transcription.");
+    const topicsResult = await extractLectureTopics({transcription});
+    if (!topicsResult.topics || topicsResult.topics.length === 0) {
+      throw new Error('Failed to extract topics from transcription.');
     }
-    const { topics } = topicsResult;
+    const {topics} = topicsResult;
 
     // Step 3: Generate Notes from Topics and Transcription
     const notesResult = await generateLectureNotes({
-        transcription,
-        topics,
-        detailLevel: input.detailLevel,
+      transcription,
+      topics,
+      detailLevel: input.detailLevel,
     });
-    
+
     return notesResult;
   }
 );

@@ -16,10 +16,15 @@ const ExtractLectureTopicsInputSchema = z.object({
 });
 export type ExtractLectureTopicsInput = z.infer<typeof ExtractLectureTopicsInputSchema>;
 
+const TopicSchema = z.object({
+    topic: z.string().describe('A main topic discussed in the lecture.'),
+    timestamp: z.string().describe('The timestamp (MM:SS) where the topic is first mentioned.'),
+});
+
 const ExtractLectureTopicsOutputSchema = z.object({
   topics: z
-    .array(z.string())
-    .describe('The main topics discussed in the lecture.'),
+    .array(TopicSchema)
+    .describe('An array of main topics and their timestamps.'),
 });
 export type ExtractLectureTopicsOutput = z.infer<typeof ExtractLectureTopicsOutputSchema>;
 
@@ -33,10 +38,11 @@ const prompt = ai.definePrompt({
   name: 'extractLectureTopicsPrompt',
   input: {schema: ExtractLectureTopicsInputSchema},
   output: {schema: ExtractLectureTopicsOutputSchema},
-  prompt: `You are an expert in extracting the main topics from a lecture transcription.
+  prompt: `You are an expert in extracting the main topics and their corresponding start times from a lecture transcription.
 
-  Please read the following transcription and extract the main topics discussed.
-  Return a list of strings.
+  Please read the following transcription and identify the main topics discussed. For each topic, provide a timestamp in MM:SS format indicating when it is first mentioned.
+  
+  Your output should be a list of objects, where each object contains a "topic" and a "timestamp".
 
   Transcription: {{{transcription}}}`,
 });
