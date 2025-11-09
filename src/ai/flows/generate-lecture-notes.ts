@@ -44,18 +44,19 @@ const generateLectureNotesPrompt = ai.definePrompt({
   A student has provided a lecture transcription and a list of key topics from that lecture. Your task is to generate comprehensive notes about these topics using rich markdown formatting.
 
   **Formatting Guidelines:**
-  - Use headings ('#', '##', '###') for main topics and sub-topics.
-  - Use **bold text** for key terms and important concepts.
+  - Use bold headings ('#', '##', '###') for main topics and sub-topics.
+  - Use **bold text** for key terms and important concepts that are not headings.
   - Use bullet points ('-' or '*') for lists of information, examples, or steps.
+  - Include examples to illustrate complex concepts.
   - Write in a clear, explanatory style.
   - Ensure the notes are well-organized and easy to read.
 
   The user has requested a '{{{detailLevel}}}' level of detail. Please adjust the length and depth of the summary accordingly:
   - 'basic': A brief overview of the main topics. Use headings and a few bullet points.
-  - 'medium': A standard summary with key points for each topic. Explain the concepts and use bold text for important terms.
+  - 'medium': A standard summary with key points for each topic. Explain the concepts and use bold text for important terms. Include simple examples.
   - 'detailed': A comprehensive summary including in-depth explanations, examples, and any relevant formulas for each topic. Use a clear structure with headings, sub-headings, bold text, and nested bullet points.
 
-  Use the provided transcription to understand the context of the lecture, but generate the notes based on your knowledge of the topics provided. You can include timestamps in your notes by referencing the original transcription where appropriate.
+  Use the provided transcription to understand the context of the lecture, but generate the notes based on your knowledge of the topics provided.
 
   Topics:
   {{#each topics}}
