@@ -35,8 +35,7 @@ const cleanAudioAndTranscribePrompt = ai.definePrompt({
   name: 'cleanAudioAndTranscribePrompt',
   input: {schema: CleanAudioAndTranscribeInputSchema},
   output: {schema: CleanAudioAndTranscribeOutputSchema},
-  prompt: `Clean the audio and transcribe it. The audio is provided as a data URI.
-
+  prompt: `You are an AI assistant that cleans and transcribes audio. The user will provide an audio file and you must return the transcription.
 Audio: {{media url=audioDataUri}}`,
 });
 
@@ -47,7 +46,7 @@ const cleanAudioAndTranscribeFlow = ai.defineFlow(
     outputSchema: CleanAudioAndTranscribeOutputSchema,
   },
   async input => {
-    const {output} = await cleanAudioAndTranscribePrompt(input);
-    return output!;
+    const llmResponse = await cleanAudioAndTranscribePrompt(input);
+    return llmResponse.output!;
   }
 );

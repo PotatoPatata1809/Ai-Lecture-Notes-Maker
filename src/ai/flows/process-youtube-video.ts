@@ -64,13 +64,17 @@ const transcribeAudioPrompt = ai.definePrompt({
 });
 
 
-export const ProcessYoutubeVideoInputSchema = z.object({
+const ProcessYoutubeVideoInputSchema = z.object({
   videoUrl: z.string().url().describe('The URL of the YouTube video.'),
   detailLevel: z
     .enum(['basic', 'medium', 'detailed'])
     .describe(
       'The desired level of detail for the notes. Can be "basic", "medium", or "detailed".'
     ),
+});
+
+const GenerateLectureNotesOutputSchema = z.object({
+  notes: z.string().describe('The summarized lecture notes in markdown format.'),
 });
 
 export type ProcessYoutubeVideoInput = z.infer<typeof ProcessYoutubeVideoInputSchema>;
@@ -85,7 +89,7 @@ const youtubeVideoFlow = ai.defineFlow(
   {
     name: 'youtubeVideoFlow',
     inputSchema: ProcessYoutubeVideoInputSchema,
-    outputSchema: z.any(),
+    outputSchema: GenerateLectureNotesOutputSchema,
     tools: [extractAudioFromYoutube]
   },
   async input => {
