@@ -51,22 +51,27 @@ const generateLectureNotesPrompt = ai.definePrompt({
   name: 'generateLectureNotesPrompt',
   input: {schema: GenerateLectureNotesInputSchema},
   output: {schema: GenerateLectureNotesOutputSchema},
-  prompt: `You are a world-class AI note-taker, renowned for creating structured, detailed, and aesthetically pleasing study materials. Your output should be refined and easy to read.
+  prompt: `You are a world-class AI scholar tasked with creating a PhD-level dissertation-quality study guide from a lecture. Your output must be exceptionally detailed, lengthy, and refined, aiming for what would be equivalent to 5-10 pages of written text.
 
-A student has provided a lecture transcription and a list of key topics with timestamps. Your task is to generate comprehensive notes **in English**.
+A student has provided a lecture transcription and a list of key topics. Your task is to generate exhaustive and comprehensive notes **in English**.
+
+**Content and Length Requirements (CRITICAL):**
+- **Extreme Depth:** For each topic, you must perform a deep dive. Do not just summarize. You must elaborate, provide historical context, explain underlying principles, and explore related concepts.
+- **Multi-Page Goal:** Your final output must be extremely lengthy and thorough. For a typical university lecture, the notes for each main topic should be several paragraphs long, often spanning multiple sub-sections.
+- **Elaborate on Everything:** Use the transcription as a starting point, but your primary job is to expand upon it with your vast knowledge. Assume the student needs a complete understanding, so explain everything from the ground up.
+- **Rich Examples & Case Studies:** For every major concept, you **must** provide multiple, detailed examples or even mini-case studies to illustrate the point. This is not optional.
+- **Critical Analysis:** Where applicable, discuss counter-arguments, alternative theories, or the limitations of the concepts presented.
 
 **Formatting and Quality Guidelines (Follow Strictly):**
-- **Structure:** The notes must be exceptionally well-organized with a clear visual hierarchy. Use ample spacing (newlines) between headings, paragraphs, and lists to ensure the document is clean and readable.
+- **Structure:** The notes must be exceptionally well-organized with a clear visual hierarchy. Use ample spacing (multiple newlines) between headings, paragraphs, and lists to ensure the document is clean and readable.
 - **Headings:**
-    - Use a markdown heading for each topic (e.g., '# Topic Name (MM:SS)'). The heading itself must be **bold**.
-    - Use sub-headings (e.g., '## Key Concepts', '### Sub-Concept') for structure within a topic. These should also be **bold**.
+    - Use a markdown heading for each main topic (e.g., '# **Topic Name (MM:SS)**'). The heading itself must be bolded.
+    - Within each topic, use bolded sub-headings (e.g., '## **Core Concepts**', '## **Illustrative Examples**', '### **Sub-Concept**') to create a clear, multi-layered structure.
 - **Key Terms:** For important terms and concepts that are not headings, make them **bold** (e.g., "**Artificial Intelligence** is a broad field...").
-- **Lists:** Use standard bullet points ('-') for lists of information, steps, or examples. Ensure there is a newline before and after the list.
-- **Examples:** You **must** include clear and relevant examples to illustrate complex concepts, especially for 'medium' and 'detailed' levels. This is a critical requirement.
-- **Clarity and Length:** Write in a clear, explanatory style suitable for a university student. The notes should be thorough and expand significantly on the provided topics.
+- **Lists:** Use standard bullet points ('-') for lists. Ensure there is a newline before and after each list.
 
 **Task:**
-Generate the notes based on the topics provided. Use the transcription for context, but expand on the topics with your own knowledge to create a complete and refined set of study notes. If a topic is not in English, translate its title first.
+Generate the dissertation-quality study guide based on the topics provided. Use the transcription for context, but expand on the topics with your own knowledge to create a complete and refined set of study notes. If a topic is not in English, translate its title first.
 
 **Topics and Timestamps:**
 {{#each topics}}
