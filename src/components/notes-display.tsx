@@ -56,7 +56,7 @@ export default function NotesDisplay({ notes, fileName, onReset }: NotesDisplayP
 
         html2canvas(input, { 
             scale: 2,
-            backgroundColor: null,
+            backgroundColor: '#0a0a23',
             useCORS: true 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
@@ -101,7 +101,7 @@ export default function NotesDisplay({ notes, fileName, onReset }: NotesDisplayP
                 </div>
             </div>
             <Separator />
-            <ScrollArea className="h-[60vh] w-full rounded-md border p-4 lg:p-6 bg-white/30 dark:bg-black/10">
+            <ScrollArea className="h-[60vh] w-full rounded-md border p-4 lg:p-6 bg-black/10">
                 <style jsx>{`
                     .prose h1 { font-size: 1.8rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid hsl(var(--border)); padding-bottom: 0.5rem;}
                     .prose h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
@@ -109,7 +109,7 @@ export default function NotesDisplay({ notes, fileName, onReset }: NotesDisplayP
                     .prose p { margin-bottom: 0.75rem; line-height: 1.7; }
                     .prose ul { margin-left: 1.25rem; margin-bottom: 1rem; }
                     .prose li { list-style-type: disc; margin-bottom: 0.5rem; }
-                    .prose :global(strong) { font-weight: 600; }
+                    .prose :global(strong) { font-weight: 600; color: hsl(var(--primary-foreground)); background-color: hsl(var(--primary)); padding: 0.1rem 0.3rem; border-radius: 0.25rem;}
                     .prose :global(em) { font-style: italic; }
                     .prose :global(code) { background-color: hsl(var(--muted)); padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-family: var(--font-code); }
                 `}</style>
